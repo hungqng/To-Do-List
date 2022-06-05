@@ -2,6 +2,7 @@ from fileinput import filename
 from tkinter import *
 from tkinter import filedialog
 import pickle
+import smartsheet
 
 root = Tk()
 root.title('To Do List App')
@@ -73,7 +74,7 @@ def save_list():
                                             title="Save File",
                                             filetypes=(
                                                         ("Text Files", "*.txt"),
-                                                        ("Excel Files", "*.xls"),
+                                                        #("Excel Files", "*.xls"),
                                                         # ("Dat Files", "*.dat"),
                                                         ("All Files", "*.*"))
     )
@@ -104,7 +105,7 @@ def open_list():
                                             title="Open File",
                                             filetypes=(
                                                         ("Text Files", "*.txt"),
-                                                        ("Excel Files", "*.xls"),
+                                                        #("Excel Files", "*.xls"),
                                                         # ("Dat Files", "*.dat"),
                                                         ("All Files", "*.*"))
     )
