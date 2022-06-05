@@ -1,4 +1,6 @@
+from fileinput import filename
 from tkinter import *
+from tkinter import filedialog
 import pickle
 
 root = Tk()
@@ -21,8 +23,8 @@ my_list = Listbox(my_frame,
             activestyle="none")
 my_list.pack(side=LEFT, fill=BOTH)
 
-# stuff = ["Walk The Dog", "Buy Groceries", "Take A Nap", "Learn Tkinter", "Rule The World"]
-# for item in stuff:
+# test = ["Morning walk", "Exercise", "Check email", "Read the news", "Study"]
+# for item in test:
 # 	my_list.insert(END, item)
 
 # Create Scrollbar
@@ -64,6 +66,78 @@ def delete_crossed():
             my_list.delete(my_list.index(count))
         else:
             count += 1
+
+def save_list():
+    file_name = filedialog.asksaveasfilename(
+                                            initialdir="D:\School\Programming\Python\To Do List",
+                                            title="Save File",
+                                            filetypes=(
+                                                        ("Text Files", "*.txt"),
+                                                        ("Excel Files", "*.xls"),
+                                                        # ("Dat Files", "*.dat"),
+                                                        ("All Files", "*.*"))
+    )
+    if file_name:
+        if file_name.endswith(".txt"):
+            pass
+        else:
+            file_name = f'{file_name}.txt'
+        count = 0
+        while count < my_list.size():
+            if my_list.itemcget(count, "fg") == "#dedede":
+                my_list.delete(my_list.index(count))
+            else:
+                count += 1
+        
+        stuff = my_list.get(0, END)
+
+        # Open the file
+        output_file = open(file_name, 'wb')
+
+        # Add items to the file
+        pickle.dump(stuff, output_file)
+
+    
+def open_list():
+    file_name = filedialog.askopenfilename(
+                                            initialdir="D:\School\Programming\Python\To Do List",
+                                            title="Open File",
+                                            filetypes=(
+                                                        ("Text Files", "*.txt"),
+                                                        ("Excel Files", "*.xls"),
+                                                        # ("Dat Files", "*.dat"),
+                                                        ("All Files", "*.*"))
+    )
+    if file_name:
+        # Delete current list
+        my_list.delete(0, END)
+
+        # Open the file
+        input_file = open(file_name, 'rb')
+
+        # Load the file
+        stuff = pickle.load(input_file)
+
+        # Display the content
+        for item in stuff:
+            my_list.insert(END, item)
+
+def delete_list():
+    my_list.delete(0, END)
+
+# Create Menu
+my_menu = Menu(root)
+root.config(menu=my_menu)
+
+# Add items to the menu
+file_menu = Menu(my_menu, tearoff=False)
+my_menu.add_cascade(label="File", menu=file_menu)
+
+# Add dropdown
+file_menu.add_command(label="Save List", command=save_list)
+file_menu.add_command(label="Open List", command=open_list)
+file_menu.add_separator
+file_menu.add_command(label="Clear List", command=delete_list)
 
 # Add buttons
 add_button = Button(button_frame, text="Add", command=add_item)
