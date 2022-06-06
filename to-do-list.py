@@ -2,7 +2,9 @@ from fileinput import filename
 from tkinter import *
 from tkinter import filedialog
 import pickle
+
 import smartsheet
+
 
 root = Tk()
 root.title('To Do List App')
@@ -73,16 +75,16 @@ def save_list():
                                             initialdir="D:\School\Programming\Python\To Do List",
                                             title="Save File",
                                             filetypes=(
-                                                        ("Text Files", "*.txt"),
-                                                        #("Excel Files", "*.xls"),
+                                                        #("Text Files", "*.txt"),
+                                                        ("Excel Files", "*.xlsx"),
                                                         # ("Dat Files", "*.dat"),
                                                         ("All Files", "*.*"))
     )
     if file_name:
-        if file_name.endswith(".txt"):
+        if file_name.endswith(".xlsx"):
             pass
         else:
-            file_name = f'{file_name}.txt'
+            file_name = f'{file_name}.xlsx'
         count = 0
         while count < my_list.size():
             if my_list.itemcget(count, "fg") == "#dedede":
@@ -104,8 +106,8 @@ def open_list():
                                             initialdir="D:\School\Programming\Python\To Do List",
                                             title="Open File",
                                             filetypes=(
-                                                        ("Text Files", "*.txt"),
-                                                        #("Excel Files", "*.xls"),
+                                                        #("Text Files", "*.txt"),
+                                                        ("Excel Files", "*.xlsx"),
                                                         # ("Dat Files", "*.dat"),
                                                         ("All Files", "*.*"))
     )
@@ -126,6 +128,18 @@ def open_list():
 def delete_list():
     my_list.delete(0, END)
 
+smart = smartsheet.Smartsheet()
+
+# def upload_list():
+#     imported_sheet = smart.Sheets.import_xlsx_sheet(
+#     4105745248610180,           # folder_id
+#     'D:\School\Programming\Python\To Do List\List.xlsx',
+#     'ToDo',  # sheet_name
+#     header_row_index=0
+#     )
+
+def download_list():
+    pass
 # Create Menu
 my_menu = Menu(root)
 root.config(menu=my_menu)
@@ -139,6 +153,8 @@ file_menu.add_command(label="Save List", command=save_list)
 file_menu.add_command(label="Open List", command=open_list)
 file_menu.add_separator
 file_menu.add_command(label="Clear List", command=delete_list)
+# file_menu.add_command(label="Upload List", command=upload_list)
+file_menu.add_command(label="Download List", command=download_list)
 
 # Add buttons
 add_button = Button(button_frame, text="Add", command=add_item)
