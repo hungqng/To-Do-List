@@ -2,9 +2,11 @@ from fileinput import filename
 from tkinter import *
 from tkinter import filedialog
 import pickle
+import os
 
 import smartsheet
-
+_dir = os.path.dirname(os.path.abspath(__file__))
+smart = smartsheet.Smartsheet()
 
 root = Tk()
 root.title('To Do List App')
@@ -128,15 +130,18 @@ def open_list():
 def delete_list():
     my_list.delete(0, END)
 
-smart = smartsheet.Smartsheet()
+#imported_sheet = smart.Sheets.import_xlsx_sheet(_dir + '/Sample Sheet.xlsx', header_row_index=0)
 
+sheet = smart.Sheets.get_sheet_as_excel(2147782728411012, '/Users/Hung/Downloads/To-Do-List-main')
 # def upload_list():
-#     imported_sheet = smart.Sheets.import_xlsx_sheet(
-#     4105745248610180,           # folder_id
-#     'D:\School\Programming\Python\To Do List\List.xlsx',
-#     'ToDo',  # sheet_name
-#     header_row_index=0
-#     )
+
+    # smart.Sheets.import_xlsx_sheet(
+    # 4105745248610180,           # folder_id
+    # 'D:\School\Programming\Python\To-Do-List-\test.xlsx',
+    # 'ToDo',  # sheet_name
+    # header_row_index=0
+    # )
+    # imported_sheet
 
 def download_list():
     pass
@@ -158,12 +163,14 @@ file_menu.add_command(label="Download List", command=download_list)
 
 # Add buttons
 add_button = Button(button_frame, text="Add", command=add_item)
+# add_db_button = Button(button_frame, text="Add To DB", command=upload_list)
 delete_button = Button(button_frame, text="Delete", command=delete_item)
 cross_button = Button(button_frame, text="Cross", command=cross_item)
 uncross_button = Button(button_frame, text="Uncross", command=uncross_item)
 delete_crossed_button = Button(button_frame, text="Delete Crossed", command=delete_crossed)
 
 add_button.grid(row=0, column=1, padx=20)
+# add_db_button.grid(row=1, column=1, padx=20)
 delete_button.grid(row=0, column=0)
 cross_button.grid(row=0, column=2)
 uncross_button.grid(row=0, column=3, padx=20)
